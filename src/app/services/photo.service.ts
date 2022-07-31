@@ -3,6 +3,7 @@ import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Storage } from '@capacitor/storage';
 import { Injectable } from '@angular/core';
+import { Platform } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ import { Injectable } from '@angular/core';
 export class PhotoService {
   public photos: UserPhoto[] = [];
   private PHOTO_STORAGE: string = 'photos';
+  private platform: Platform;
 
 public async addNewToGallery() {
   
@@ -89,7 +91,9 @@ private convertBlobToBase64 = (blob: Blob) => new Promise((resolve, reject) => {
   });
 });
 
-constructor() { }
+constructor(platform: Platform) {
+  this.platform = platform;
+}
 
 
 }
