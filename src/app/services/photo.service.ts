@@ -36,6 +36,7 @@ public async addNewToGallery() {
   });
 
 }
+// Save picture to file on device
 private async savePicture(photo: Photo) {
   // Convert photo to base64 format, required by Filesystem API to save
   const base64Data = await this.readAsBase64(photo);
@@ -47,13 +48,24 @@ private async savePicture(photo: Photo) {
     data: base64Data,
     directory: Directory.Data
   });
-   // Use webPath to display the new image instead of base64 since it's
-  // already loaded into memory
-  return {
-    filepath: fileName,
-    webviewPath: photo.webPath
-  };
- }
+
+  if (this.platform.is('hybrid')) {
+    // Display the new image by rewriting the 'file://' path to HTTP
+    // Details: https://ionicframework.com/docs/building/webview#file-protocol
+    return {
+      filepath: savedFile.uri,
+      webviewPath: Capacitor.convertFileSrc(savedFile.uri),
+    };
+  }
+  else {
+    // Use webPath to display the new image instead of base64 since it's
+    // already loaded into memory
+    return {
+      filepath: fileName,
+      webviewPath: photo.webPath
+    };
+  }
+}
  private async readAsBase64(photo: Photo) {
 // "hybrid" will detect Cordova or Capacitor
 if (this.platform.is('hybrid')) {
