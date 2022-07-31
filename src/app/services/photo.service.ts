@@ -4,6 +4,7 @@ import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Storage } from '@capacitor/storage';
 import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
+import { Capacitor } from '@capacitor/core';
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +38,8 @@ public async addNewToGallery() {
 
 }
 // Save picture to file on device
-private async savePicture(photo: Photo) {
+ // Save picture to file on device
+ private async savePicture(photo: Photo) {
   // Convert photo to base64 format, required by Filesystem API to save
   const base64Data = await this.readAsBase64(photo);
 
